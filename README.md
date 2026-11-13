@@ -122,7 +122,7 @@ Copy the server target, the `start.sh` and the Dockerfile, and move the lifecycl
 
 `start.sh` runs the server under `stdbuf -oL`. Gameye runs containers with a terminal, so its logs endpoint shows lines as they happen either way. Without a terminal, as with plain `docker run`, Docker Compose or a CI runner, Unreal holds stdout in a buffer and `docker logs` falls behind. `stdbuf` keeps those live too, and it replaces itself with the server, so `SIGTERM` still reaches Unreal directly.
 
-The build uses the Development configuration so that logs reach stdout. Shipping builds strip `UE_LOG` output unless the server target sets `bUseLoggingInShipping = true`.
+The build uses the Development configuration so that logs reach stdout, which is what Gameye's logs endpoint shows. Development suits testing and a first deploy. It keeps debug features such as console commands and runs somewhat slower than Shipping, so decide on your launch build before you go live. A Shipping build (`UE_CONFIG=Shipping scripts/build-server.sh`) compiles log output out: in our test it printed three lines over a whole match. `start.sh` also finds the Shipping binary, which is named `DedicatedServerSampleServer-Linux-Shipping`. To keep logs in Shipping, set `bUseLoggingInShipping = true` and `BuildEnvironment = TargetBuildEnvironment.Unique` in the server target. That rebuilds the engine, so it needs an engine built from source. On Epic's prebuilt container image the setting builds without errors but the server still logs nothing.
 
 ## License
 

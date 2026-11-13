@@ -11,4 +11,8 @@ fi
 # stdbuf flushes stdout after every line. Gameye runs containers with a
 # terminal, so its logs are live either way, but plain `docker run`, compose
 # and CI give stdout a pipe, and Unreal then holds log lines in a buffer.
-exec stdbuf -oL -eL ./DedicatedServerSample/Binaries/Linux/DedicatedServerSampleServer -port="$PORT" -log "$@"
+# Development builds name the binary DedicatedServerSampleServer; Shipping
+# builds add -Linux-Shipping.
+SERVER=./DedicatedServerSample/Binaries/Linux/DedicatedServerSampleServer
+[ -x "$SERVER" ] || SERVER="$SERVER-Linux-Shipping"
+exec stdbuf -oL -eL "$SERVER" -port="$PORT" -log "$@"
