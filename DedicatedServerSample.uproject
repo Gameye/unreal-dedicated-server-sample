@@ -1,0 +1,13 @@
+{
+	"FileVersion": 3,
+	"EngineAssociation": "",
+	"Category": "",
+	"Description": "Minimal Unreal Engine 5 dedicated server that runs on Gameye.",
+	"Modules": [
+		{
+			"Name": "DedicatedServerSample",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	]
+}
